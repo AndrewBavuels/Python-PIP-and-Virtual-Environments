@@ -15,6 +15,7 @@ python3 main.py
 ```sh
 git clone
 cd app
+conda create --name app_env # Create environment
 conda activate app_env
 pip install -r requirements.txt
 python3 main.py
