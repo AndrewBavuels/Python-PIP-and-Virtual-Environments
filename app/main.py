@@ -3,24 +3,23 @@ import charts
 import pandas as pd
 
 def run():
-  data = pd.read_csv('data.csv')
-  data = data.to_dict(orient='records')
-  data = list(filter(lambda item : item['Continent'] == 'South America',data))
+    df = pd.read_csv('data.csv')
+    df_filtered = df[df['Continent'] == 'Africa']
 
-  countries = list(map(lambda x: x['Country'], data))
-  percentages = list(map(lambda x: x['World Population Percentage'], data))
-  charts.generate_pie_chart(countries, percentages)
+    countries = df_filtered['Country'].values
+    percentages = df_filtered['World Population Percentage'].values
+    charts.generate_pie_chart(countries, percentages)
 
-  country = input('Type Country => ')
-  print(country)
+    country = input('Type Country => ')
+    print(country)
 
-  result = utils.population_by_country(data, country)
+    result = utils.population_by_country(df, country)
 
-  if len(result) > 0:
-    country = result[0] 
-    print(country)   
-    labels, values = utils.get_population(country)
-    charts.generate_bar_chart(country['Country'], labels, values)
+    if not result.empty:
+        country_data = result.iloc[0]  # Use .iloc[0] to access the first row as a Series
+        print(country_data)
+        labels, values = utils.get_population(country_data)
+        charts.generate_bar_chart(country_data['Country'], labels, values)
 
 if __name__ == '__main__':
-  run()
+    run()
